@@ -144,9 +144,8 @@ a:focus-visible,
 button:focus-visible,
 .focusable:focus-visible {
   outline: 2px dashed #0C3E2E;
-  outline-offset: 3px;
+  outline-offset: 2px;
   transition: outline-color 0.3s ease, outline-offset 0.3s ease;
-  margin: 0.2857142857rem 0;
 }
 
 .visually-hidden {
@@ -569,6 +568,9 @@ button:focus-visible,
   .header-menu__link {
     font-size: 1.5714285714rem;
     display: block;
+  }
+  .header-menu__link:focus-visible {
+    outline-offset: -2px;
   }
 }
 
@@ -1992,6 +1994,7 @@ button:focus-visible,
 .reviews__slider-button {
   display: flex;
   align-items: center;
+  margin-bottom: 0.3571428571rem;
 }
 .review__header {
   display: flex;

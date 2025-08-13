@@ -88,9 +88,8 @@ a:focus-visible,
 button:focus-visible,
 .focusable:focus-visible {
 	outline: 2px dashed #0C3E2E;
-	outline-offset: 3px;
+	outline-offset: 2px;
 	transition: outline-color 0.3s ease, outline-offset 0.3s ease;
-	margin: toRem(4) 0;
 }
 
 .visually-hidden {
@@ -553,6 +552,10 @@ button:focus-visible,
 		&__link {
 			font-size: toRem(22);
 			display: block;
+
+			&:focus-visible{
+				outline-offset: -2px;
+			}
 		}
 	}
 }
@@ -2032,13 +2035,14 @@ button:focus-visible,
 	&__slider-button {
 		display: flex;
 		align-items: center;
+		margin-bottom: toRem(5);
 
 		img {}
+
+		&--prev {}
+
+		&--next {}
 	}
-
-	&__slider-button--prev {}
-
-	&__slider-button--next {}
 }
 
 .review {
