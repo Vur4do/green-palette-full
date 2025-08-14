@@ -256,6 +256,126 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+//appearance animation ====================================================
+//all the items that are engaged in the temple
+let animatedItems = document.querySelectorAll('.anim-item');
+
+function offset(el) {
+	const rect = el.getBoundingClientRect(),
+		scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+		scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+	return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
+}
+
+function animOnScroll() {
+	animatedItems.forEach(item => {
+		const itemHeight = item.offsetHeight;
+		const itemOffset = offset(item).top;
+		//When a quarter of an item is visible
+		const animStart = 4;
+
+		let itemPoint = window.innerHeight - itemHeight / animStart;
+
+		if (itemHeight > window.innerHeight) {
+			itemPoint = window.innerHeight - window.innerHeight / animStart;
+		}
+
+		if ((scrollY > itemOffset - itemPoint) && scrollY < (itemOffset + itemHeight)) {
+			item.classList.add('animated');
+		} else {
+			//No-Re-Animation class in items that are not re-animated
+			if (!item.classList.contains('no-re-animation')) {
+				item.classList.remove('animated');
+			}
+		}
+	});
+}
+
+if (animatedItems.length > 0) {
+	window.addEventListener('scroll', animOnScroll);
+
+	setTimeout(() => {
+		animOnScroll();
+	}, 150);
+}
+//====================================================
+
+
+
+// growing numbers ====================================================
+let numberElements = document.querySelectorAll('.about__desrc-term');
+let steps = [];
+let numbers = [];
+
+function growNumbers() {
+	numberElements.forEach((item, i) => {
+		const itemHeight = item.offsetHeight;
+		const itemOffset = offset(item).top;
+		//коли видно чверть елемента
+		const animStart = 4;
+
+		let itemPoint = window.innerHeight - itemHeight / animStart;
+
+		if (itemHeight > window.innerHeight) {
+			itemPoint = window.innerHeight - window.innerHeight / animStart;
+		}
+
+		if ((scrollY > itemOffset - itemPoint) && scrollY < (itemOffset + itemHeight)) {
+			if (item.classList.contains('anim-item')) {
+				growNumber(numbers[i], item, 1500, steps[i]);
+				item.classList.remove('anim-item');
+			}
+		}
+	});
+}
+
+function growNumber(num, elem, time, step) {
+	if (Number.isFinite(parseInt(num))) { //перевірка, чи є num числом
+		num = parseInt(num);
+	} else {
+		console.log('The element is not a number');
+		return;
+	}
+	if (step > num) {
+		console.log('The step cannot be more than a number');
+		return;
+	}
+	let n = 0;
+	//прибираємо в змінній num залишок від ділення на step
+	//щоб число виводилось коректно
+	let multipleOfStep = step * Math.floor(num / step);
+	let numRemainder = num - multipleOfStep;
+	let stepTime = Math.round(time / (num / step));
+	let interval = setInterval(() => {
+		n += step;
+		if (n == num) {
+			clearInterval(interval);
+		} else if (n == multipleOfStep) {
+			//додаємо раніше забраний залишок
+			n += numRemainder;
+			elem.innerHTML = n;
+			clearInterval(interval);
+		}
+		elem.innerHTML = n;
+	}, stepTime);
+}
+
+if (numberElements.length > 0) {
+	numberElements.forEach((el) => {
+		el.classList.add('anim-item');
+		numbers.push(el.innerText);
+		steps.push(Math.ceil(Number(el.innerText) / 20));
+		el.innerHTML = 0;
+	});
+
+	window.addEventListener('scroll', growNumbers);
+
+	growNumbers();
+}
+//====================================================
+
+
+
 // review texts hiding ==========================================
 const reviewTexts = document.querySelectorAll('.review__text');
 reviewTexts.forEach(text => {
